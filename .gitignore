@@ -1,5 +1,5 @@
 /bin/
-/.settings/
+*.prefs
 *.class
 *.jar
 *.zip
