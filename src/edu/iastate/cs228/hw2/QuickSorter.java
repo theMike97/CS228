@@ -63,16 +63,7 @@ public class QuickSorter extends AbstractSorter
 	@Override 
 	public void sort(int order)
 	{
-		switch(order) {
-		case 1:
-			quickSortRec(0, points.length - 1);
-			break;
-			
-		case 2:
-			break;
-			
-		default:
-		}
+		quickSortRec(0, points.length - 1);
 	}
 	
 	
@@ -106,7 +97,8 @@ public class QuickSorter extends AbstractSorter
 		int i = first - 1;
 		
 		for (int j = first; j < last; j++) {
-			if (points[j].compareTo(pivot) < 1) {
+//			if (points[j].compareTo(pivot) < 1) {
+			if (pointComparator.compare(points[j], pivot) < 1) {
 				
 				Point tmp = points[++i];
 				points[i] = points[j];

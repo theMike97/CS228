@@ -53,6 +53,7 @@ public abstract class AbstractSorter {
 		// No implementation needed. Provides a default super constructor to subclasses.
 		// Removable after implementing SelectionSorter, InsertionSorter, MergeSorter,
 		// and QuickSorter.
+//		points = new Point[0];
 	}
 
 	/**
@@ -65,6 +66,9 @@ public abstract class AbstractSorter {
 	 *             if pts == null or pts.length == 0.
 	 */
 	protected AbstractSorter(Point[] pts) throws IllegalArgumentException {
+		points = new Point[pts.length];
+		lowestPoint = pts[0];
+		
 		if (pts.length == 0)
 			throw new IllegalArgumentException();
 
@@ -152,7 +156,6 @@ public abstract class AbstractSorter {
 	 */
 	public String stats() {
 		return null;
-		// TODO
 	}
 
 	/**
@@ -193,19 +196,21 @@ public abstract class AbstractSorter {
 	 */
 	protected void setComparator() {
 		
-		
-		pointComparator = new Comparator<Point>() {
-
+		Comparator<Point> comp = new Comparator<Point>() {
+			
+			PolarAngleComparator pac = new PolarAngleComparator(new Point());
+			
+			
 			@Override
 			public int compare(Point x, Point y) {
-				
-				if (sortByAngle) {
-					
-				}
-				return 0;
+				if(sortByAngle)
+					return pac.comparePolarAngle(x, y);
+				else
+					return x.compareTo(y);
 			}
-
 		};
+		
+		pointComparator = comp;
 	}
 
 	/**
@@ -218,5 +223,9 @@ public abstract class AbstractSorter {
 		Point tmp = points[i];
 		points[i] = points[j];
 		points[j] = tmp;
+	}
+	
+	public Point[] getSortedPoints() {
+		return points;
 	}
 }

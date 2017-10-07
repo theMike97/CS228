@@ -63,16 +63,10 @@ public class MergeSorter extends AbstractSorter
 	@Override 
 	public void sort(int order)
 	{
-		switch (order) { 
-		case 1:
-			merge(points);
-			break;
-			
-		case 2:
-			break;
-			
-		default:
-		}
+		sortByAngle = (order == 1) ? false : true;
+		setComparator();
+		
+		merge(points);
 	}
 
 	
@@ -137,6 +131,5 @@ public class MergeSorter extends AbstractSorter
 		Point[] tmp = new Point[pts.length];
 		mergeSortRec(pts, tmp, 0, pts.length - 1);
 	}
-	
 
 }

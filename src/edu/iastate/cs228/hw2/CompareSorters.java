@@ -15,7 +15,8 @@ package edu.iastate.cs228.hw2;
  */
 
 import java.io.FileNotFoundException;
-import java.util.Scanner; 
+import java.util.Scanner;
+import java.util.Arrays;
 import java.util.Random; 
 
 
@@ -45,12 +46,36 @@ public class CompareSorters
 		// 
 		// A sample scenario is given in Section 2 of the assignment description. 
 		// 	
-		AbstractSorter[] sorters = new AbstractSorter[4]; 
+		AbstractSorter[] sorters = new AbstractSorter[4];
 		
 		// Within a sorting round, every sorter object write its output to the file 
 		// "select.txt", "insert.txt", "merge.txt", or "quick.txt" if it is an object of 
 		// SelectionSort, InsertionSort, MergeSort, or QuickSort, respectively. 
 		
+		Point[] pts = {new Point(0,0), new Point(-3,-9), new Point(0,-10), new Point(8,4), new Point(3,3)};
+		
+		InsertionSorter is = new InsertionSorter(pts);
+		//SelectionSorter ss = new SelectionSorter(pts);
+		MergeSorter ms = new MergeSorter(pts);
+		QuickSorter qs = new QuickSorter(pts);
+		
+		sorters[0] = is;
+		sorters[0].sort(1);
+		
+		//sorters[1] = ss;
+		//sorters[1].sort(1);
+		
+		sorters[2] = ms;
+		sorters[2].sort(2);
+		
+		sorters[3] = qs;
+		sorters[3].sort(1);
+		
+		System.out.println("IS" + Arrays.toString(sorters[0].getSortedPoints()));
+		//System.out.println("SS" + Arrays.toString(sorters[1].getSortedPoints()));
+		System.out.println("MS" + Arrays.toString(sorters[2].getSortedPoints()));
+		System.out.println("QS" + Arrays.toString(sorters[3].getSortedPoints()));
+				
 	}
 	
 	

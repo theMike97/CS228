@@ -61,28 +61,21 @@ public class InsertionSorter extends AbstractSorter
 	@Override 
 	public void sort(int order)
 	{
-		switch (order) {
-		case 1:
-			int size = points.length;
-			for (int i = 1; i < size; i++) {
-				Point ref = points[i];
-				int j = i - 1;
-				
-				while (j >= 0 && points[j].compareTo(ref) == 1) {
-					points[j+1] = points[j];
-					j--;
-				}
-				points[j+1] = ref;
+		
+		sortByAngle = (order == 2) ? true : false;
+		setComparator();
+		
+		int size = points.length;
+		for (int i = 1; i < size; i++) {
+			Point ref = points[i];
+			int j = i - 1;
+			
+			while (j >= 0 && pointComparator.compare(points[j],ref) == 1) {
+			//while (j >= 0 && points[j].compareTo(ref) == 1) {
+				points[j+1] = points[j];
+				j--;
 			}
-			break;
-			
-		case 2:
-			// TODO
-			break;
-			
-		default:
-			System.err.println("Invalid Order.");
-			break;
+			points[j+1] = ref;
 		}
 	}
 }

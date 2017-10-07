@@ -62,27 +62,15 @@ public class SelectionSorter extends AbstractSorter
 	 */
 	@Override 
 	public void sort(int order)
-	{
-		switch (order) {
-		case 1: 
-			for (int i = 0; i < points.length - 1; i++) {
-				int index = i;
-				for (int j = i+1; j < points.length; j++) {
-					if (points[j].compareTo(points[index]) == -1) {
-						index = j;
-					}
-					Point small = points[index];
-					points[index] = points[i];
-					points[i] = small;
-				}
+	{ 
+		for (int i = 0; i < points.length - 1; i++) {
+			int index = i;
+			for (int j = i+1; j < points.length; j++) {
+				
+				if (pointComparator.compare(points[j], points[index]) == -1) index = j;
+				
+				if (i != index) swap(i, index);
 			}
-			break;
-			
-		case 2: 
-			// TODO
-			break;
-		default: 
-			System.err.println("Invalid order");
 		}
-	}	
+	}
 }
