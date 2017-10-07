@@ -101,18 +101,12 @@ public class QuickSorter extends AbstractSorter
 		
 		for (int j = first; j < last; j++) {
 //			if (points[j].compareTo(pivot) < 1) {
-			if (pointComparator.compare(points[j], pivot) < 1) {
-				
-				Point tmp = points[++i];
-				points[i] = points[j];
-				points[j] = tmp;
-			}
+			if (pointComparator.compare(points[j], pivot) < 1)
+				swap(++i,j);
 		}
+		swap(i+1, last);
 		
-		Point tmp = points[i+1];
-		points[i+1] = points[last];
-		points[last] = tmp;
-		return 0; 
+		return i+1; 
 	}	
 		
 

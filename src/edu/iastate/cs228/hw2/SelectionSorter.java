@@ -66,29 +66,22 @@ public class SelectionSorter extends AbstractSorter
 		sortByAngle = (order == 2) ? true : false;
 		setComparator();
 		
-		String debug = "";
-		
 		if (points == null || points.length == 0)
 			throw new IllegalArgumentException("Null pointer or 0 size");
 		
 		for (int i = 0; i < points.length - 1; i++) {
-			int index = i;
+//			System.out.println(i);
+			int min = i;
 			
 			for (int j = i + 1; j < points.length; j++) {
 				
-				System.out.println(pointComparator.compare(points[j], points[index]) == -1);
+//				System.out.println(points[min] + ", " + points[j]);
+//				System.out.println(pointComparator.compare(points[j], points[index]) == -1);
 				
-				if (pointComparator.compare(points[j], points[index]) == -1)
-					index = j;
-				
-				if (i != index) {
-					System.out.println("here");
-					swap(i, index);
-				}
-					
+				if (pointComparator.compare(points[j], points[min]) == -1)
+					min = j;
 			}
-			debug += " -> " + Arrays.toString(points) + "\n";
+			swap(min, i);
 		}
-		System.out.println(debug);
 	}
 }

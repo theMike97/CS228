@@ -1,5 +1,7 @@
 package edu.iastate.cs228.hw2;
 
+import java.util.Arrays;
+
 /**
  *  
  * @author
@@ -9,6 +11,8 @@ package edu.iastate.cs228.hw2;
 import java.util.Comparator;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.IllegalArgumentException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -92,33 +96,56 @@ public abstract class AbstractSorter {
 	 *             when the input file contains an odd number of integers
 	 */
 	protected AbstractSorter(String inputFileName) throws FileNotFoundException, InputMismatchException {
-		File input = new File(inputFileName);
-		int x, y;
-		int index = 0;
-
+		
+		File input = new File(inputFileName);		
+		String nl = "";
+		
 		if (input.exists()) {
+			
 			try (Scanner sc = new Scanner(input)) {
 
-				while (sc.hasNext()) {
-
-					x = sc.nextInt();
-					if (sc.hasNext())
-						y = sc.nextInt();
-					else
-						throw new InputMismatchException();
-
-					Point p = new Point(x, y);
-					points[index] = p;
-
-					if (points[index].getX() < lowestPoint.getX())
-						lowestPoint = points[index];
-
-					index++;
+				while (sc.hasNextLine()) {
+					nl += sc.nextLine() + " ";
 				}
+				nl = nl.substring(0, nl.length() - 1);
+				
+				String[] strarr;
+				strarr = nl.split(" ");
+				
+				int[] intarr = new int[strarr.length];
+				try {
+					for (int i = 0; i < strarr.length; i++) {
+						intarr[i] = Integer.parseInt(strarr[i]);
+					}
+				} catch (NumberFormatException ex) {
+					System.err.println("Invalid input.");
+				}
+				
+				int numOfPts = intarr.length / 2;
+				if (intarr.length % 2 != 0 || intarr.length == 0)
+					throw new InputMismatchException("Incomplete point.");
+				
+				points = new Point[numOfPts];
+				lowestPoint = new Point(intarr[0], intarr[1]);
+				
+				int index = 0;
+				
+				for (int i = 0; i < numOfPts; i++) {
+					points[i] = new Point(intarr[index++], intarr[index++]);
+					
+					if (points[i].compareTo(lowestPoint) == -1) {
+						lowestPoint = points[i]; // keeps lowestPoint current
+					} else if (points[i].compareTo(lowestPoint) == 0) { // tie case
+						if (points[i].getX() < lowestPoint.getX())
+							points[i] = lowestPoint;
+					}
+				}
+				System.out.println(Arrays.toString(intarr));
 			}
 		} else {
 			throw new FileNotFoundException("File " + input + " does not exist!");
 		}
+		System.out.println(Arrays.toString(points));
 	}
 
 	/**
@@ -180,8 +207,26 @@ public abstract class AbstractSorter {
 	 * 
 	 * @throws FileNotFoundException
 	 */
-	public void writePointsToFile() throws FileNotFoundException {
-		// TODO
+	public void writePointsToFile() throws FileNotFoundException, IOException {
+		FileWriter wr = new FileWriter(outputFileName);
+		
+		if (!sortByAngle) {
+			
+			for (Point point : points) {
+				wr.write(point.getX() + " " + point.getY() + "\n");
+			}
+		}
+		else {
+			wr.write(points[0].getX() + " " + points[0].getY() + "\n");
+			for (int i = 1; i < points.length; i++) {
+				wr.write(points[i].getX() + " " + points[i].getY() + " "
+						+ points[0].getX() + " " + points[0].getY() + " "
+						+ points[i].getX() + " " + points[i].getY() + "\n");
+			}
+		}
+		
+		wr.flush();
+		wr.close();
 	}
 
 	/**

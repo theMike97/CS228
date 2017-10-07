@@ -15,6 +15,7 @@ package edu.iastate.cs228.hw2;
  */
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.Random; 
@@ -28,8 +29,9 @@ public class CompareSorters
 	 * points by x-coordinate or by polar angle with respect to the lowest point.  
 	 * 
 	 * @param args
+	 * @throws FileNotFoundException 
 	 **/
-	public static void main(String[] args) 
+	public static void main(String[] args) throws FileNotFoundException 
 	{		
 		// TODO 
 		// 
@@ -52,9 +54,13 @@ public class CompareSorters
 		// "select.txt", "insert.txt", "merge.txt", or "quick.txt" if it is an object of 
 		// SelectionSort, InsertionSort, MergeSort, or QuickSort, respectively. 
 		
-		Point[] pts = {new Point(0,0), new Point(-3,-9), new Point(0,-10), new Point(8,4), new Point(3,3)};
+//		Point[] pts = {new Point(1,0), new Point(-3,-9), new Point(0,0), new Point(0,-10), new Point(8,4), new Point(3,3)};
+		Random generator = new Random();
 		
-		InsertionSorter is = new InsertionSorter(pts);
+		Point[] pts = generateRandomPoints(8, generator);
+//		System.out.println(Arrays.toString(pts));
+		
+		InsertionSorter is = new InsertionSorter("select.txt");
 		SelectionSorter ss = new SelectionSorter(pts);
 		MergeSorter ms = new MergeSorter(pts);
 		QuickSorter qs = new QuickSorter(pts);
@@ -63,19 +69,28 @@ public class CompareSorters
 		sorters[0].sort(1);
 		
 		sorters[1] = ss;
-		sorters[1].sort(1);
+		sorters[1].sort(2);
 		
 		sorters[2] = ms;
-//		sorters[2].sort(2);
+		sorters[2].sort(1);
 		
 		sorters[3] = qs;
-//		sorters[3].sort(2);
+		sorters[3].sort(1);
 		
-		System.out.println("\nIS" + Arrays.toString(sorters[0].getSortedPoints()));
+		System.out.println("IS" + Arrays.toString(sorters[0].getSortedPoints()));
 		System.out.println("SS" + Arrays.toString(sorters[1].getSortedPoints()));
-//		System.out.println("MS" + Arrays.toString(sorters[2].getSortedPoints()));
-//		System.out.println("QS" + Arrays.toString(sorters[3].getSortedPoints()));
-				
+		System.out.println("MS" + Arrays.toString(sorters[2].getSortedPoints()));
+		System.out.println("QS" + Arrays.toString(sorters[3].getSortedPoints()));
+		
+		try {
+			sorters[0].outputFileName = "IS.txt";
+			sorters[0].writePointsToFile();
+			
+			sorters[1].outputFileName = "SS.txt";
+			sorters[1].writePointsToFile();
+		} catch (IOException e) {
+			System.err.println("Oops.  There was an error writing your file!");
+		}
 	}
 	
 	
@@ -92,10 +107,11 @@ public class CompareSorters
 	 */
 	public static Point[] generateRandomPoints(int numPts, Random rand) throws IllegalArgumentException
 	{
+		if (numPts < 1) throw new IllegalArgumentException("Not enough points!"); 
+		
 		Point[] points = new Point[numPts];
-		for (int i = 0; i < numPts; i++) {
-			Point pt = new Point((int)(Math.random()*100-49), (int)(Math.random()*100-49));
-			points[i] = pt;
+		for (int i = 0; i < points.length; i++) {
+			points[i] = new Point(rand.nextInt(101) - 50, rand.nextInt(101) - 50);
 		}
 		return points;
 	}
