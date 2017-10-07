@@ -91,6 +91,8 @@ public class CompareSorters
 		} catch (IOException e) {
 			System.err.println("Oops.  There was an error writing your file!");
 		}
+		
+		System.out.println(sorters[0].stats());
 	}
 	
 	

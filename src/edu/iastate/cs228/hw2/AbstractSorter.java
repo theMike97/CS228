@@ -180,7 +180,13 @@ public abstract class AbstractSorter {
 	 * Use the spacing in the sample run in Section 2 of the assignment description.
 	 */
 	public String stats() {
-		return null;
+		String clss = this.getClass().toString();
+		clss = clss.substring(6);
+		System.out.println(clss);
+		String[] cStr = clss.split(".");
+		System.out.println(Arrays.toString(cStr));
+		algorithm = cStr[cStr.length];
+		return this.getClass().toString();
 	}
 
 	/**
