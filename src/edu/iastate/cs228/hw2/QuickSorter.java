@@ -63,10 +63,13 @@ public class QuickSorter extends AbstractSorter
 	@Override 
 	public void sort(int order)
 	{
+		long startTime = System.nanoTime();
 		sortByAngle = (order == 2) ? true : false;
 		setComparator();
 		
 		quickSortRec(0, points.length - 1);
+		
+		sortingTime = System.nanoTime() - startTime;
 	}
 	
 	

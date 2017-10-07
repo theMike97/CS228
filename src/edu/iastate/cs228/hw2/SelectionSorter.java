@@ -63,6 +63,8 @@ public class SelectionSorter extends AbstractSorter
 	@Override 
 	public void sort(int order)
 	{ 
+		long startTime = System.nanoTime();
+		
 		sortByAngle = (order == 2) ? true : false;
 		setComparator();
 		
@@ -83,5 +85,8 @@ public class SelectionSorter extends AbstractSorter
 			}
 			swap(min, i);
 		}
+		
+		long endTime = System.nanoTime();
+		sortingTime = endTime - startTime;
 	}
 }

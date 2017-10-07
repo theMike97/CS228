@@ -181,12 +181,8 @@ public abstract class AbstractSorter {
 	 */
 	public String stats() {
 		String clss = this.getClass().toString();
-		clss = clss.substring(6);
-		System.out.println(clss);
-		String[] cStr = clss.split(".");
-		System.out.println(Arrays.toString(cStr));
-		algorithm = cStr[cStr.length];
-		return this.getClass().toString();
+		algorithm = clss.substring(28);
+		return algorithm + " " + points.length + " " + sortingTime;
 	}
 
 	/**

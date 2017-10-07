@@ -57,10 +57,10 @@ public class CompareSorters
 //		Point[] pts = {new Point(1,0), new Point(-3,-9), new Point(0,0), new Point(0,-10), new Point(8,4), new Point(3,3)};
 		Random generator = new Random();
 		
-		Point[] pts = generateRandomPoints(8, generator);
+		Point[] pts = generateRandomPoints(1000, generator);
 //		System.out.println(Arrays.toString(pts));
 		
-		InsertionSorter is = new InsertionSorter("select.txt");
+		InsertionSorter is = new InsertionSorter(pts);
 		SelectionSorter ss = new SelectionSorter(pts);
 		MergeSorter ms = new MergeSorter(pts);
 		QuickSorter qs = new QuickSorter(pts);
@@ -69,7 +69,7 @@ public class CompareSorters
 		sorters[0].sort(1);
 		
 		sorters[1] = ss;
-		sorters[1].sort(2);
+		sorters[1].sort(1);
 		
 		sorters[2] = ms;
 		sorters[2].sort(1);
@@ -77,22 +77,20 @@ public class CompareSorters
 		sorters[3] = qs;
 		sorters[3].sort(1);
 		
-		System.out.println("IS" + Arrays.toString(sorters[0].getSortedPoints()));
-		System.out.println("SS" + Arrays.toString(sorters[1].getSortedPoints()));
-		System.out.println("MS" + Arrays.toString(sorters[2].getSortedPoints()));
-		System.out.println("QS" + Arrays.toString(sorters[3].getSortedPoints()));
+//		try {
+//			sorters[0].outputFileName = "insert.txt";
+//			sorters[0].writePointsToFile();
+//			
+//			sorters[1].outputFileName = "select.txt";
+//			sorters[1].writePointsToFile();
+//		} catch (IOException e) {
+//			System.err.println("Oops.  There was an error writing your file!");
+//		}
 		
-		try {
-			sorters[0].outputFileName = "IS.txt";
-			sorters[0].writePointsToFile();
-			
-			sorters[1].outputFileName = "SS.txt";
-			sorters[1].writePointsToFile();
-		} catch (IOException e) {
-			System.err.println("Oops.  There was an error writing your file!");
+		for (AbstractSorter sorter : sorters) {
+			System.out.println(Arrays.toString(sorter.getSortedPoints()));
+			System.out.println(sorter.stats());
 		}
-		
-		System.out.println(sorters[0].stats());
 	}
 	
 	
