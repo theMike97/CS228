@@ -51,13 +51,14 @@ public class PolarAngleComparator implements Comparator<Point>
 	public int compare(Point p1, Point p2)
 	{
 		if (!p1.equals(p2)) {
-			if (p1.equals(referencePoint)) {
+			if (p1.equals(referencePoint))
 				return -1;
-			} else if (!p2.equals(referencePoint) && comparePolarAngle(p1, p2) == -1) {
+			else if (!p2.equals(referencePoint) && comparePolarAngle(p1, p2) == -1)
 				return -1;
-			} else if (!p2.equals(referencePoint) && comparePolarAngle(p1, p2) == 0 && compareDistance(p1, p2) == -1) {
+			else if (!p2.equals(referencePoint) && comparePolarAngle(p1, p2) == 0 && compareDistance(p1, p2) == -1) 
 				return -1;
-			} else return 1;
+			else 
+				return 1;
 		}
 		return 0;
 	}
@@ -80,13 +81,12 @@ public class PolarAngleComparator implements Comparator<Point>
     {
     	// call crossProduct(p1, p2); if it returns > 0 then p1 is the smaller angle
     	// 							  if it returns == 0 then p1 and p2 share the same angle
-    	if (crossProduct(p1, p2) == 0) {
+    	if (crossProduct(p1, p2) == 0)
     		return 0;
-    	}
-    	else if (p1.equals(referencePoint) || crossProduct(p1, p2) > 0) {
+    	else if (p1.equals(referencePoint) || crossProduct(p1, p2) > 0)
     		return -1;
-    	}
-    	else return 1;
+    	else 
+    		return 1;
     }
     
     
@@ -112,13 +112,7 @@ public class PolarAngleComparator implements Comparator<Point>
     	int p1d = dotProduct(p1v, p1v);
     	int p2d = dotProduct(p2v, p2v);
     	
-    	if (p1d == p2d) {
-    		return 0;
-    	}
-    	else if (p1d < p2d) {
-    		return -1;
-    	}
-    	return 1; 
+    	return (p1d == p2d) ? 0 : (p1d < p2d) ? -1 : 1;
     }
     
 
@@ -152,7 +146,7 @@ public class PolarAngleComparator implements Comparator<Point>
     	int[] p2v = {p2.getX() - referencePoint.getX(), p2.getY() - referencePoint.getY()};
     	
     	// find dot product
-    	int dotp = p1v[0] * p2v[0] + p1v[1] * p2v[1];
+    	int dotp = (p1v[0] * p2v[0]) + (p1v[1] * p2v[1]);
     	return dotp; 
     }
 }

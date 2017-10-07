@@ -37,7 +37,7 @@ public class MergeSorter extends AbstractSorter
 	public MergeSorter(Point[] pts) 
 	{
 		super(pts);
-		points = pts;
+		points = super.points;
 	}
 	
 	
@@ -49,7 +49,7 @@ public class MergeSorter extends AbstractSorter
 	public MergeSorter(String inputFileName) throws FileNotFoundException
 	{
 		super(inputFileName);
-		fileName = inputFileName;
+		points = super.points;
 	}
 
 
@@ -63,7 +63,7 @@ public class MergeSorter extends AbstractSorter
 	@Override 
 	public void sort(int order)
 	{
-		sortByAngle = (order == 1) ? false : true;
+		sortByAngle = (order == 2) ? true : false;
 		setComparator();
 		
 		merge(points);
@@ -96,7 +96,8 @@ public class MergeSorter extends AbstractSorter
 		// combine sorted arrays
 		k = first;
 		for (i = first, j = mid+1; i <= mid && j <= last; ) {
-			if (pts[i].compareTo(pts[j]) == -1)
+//			if (pts[i].compareTo(pts[j]) == -1)
+			if (pointComparator.compare(pts[i], pts[j]) == -1) 
 				tmp[k++] = pts[i++];
 			else
 				tmp[k++] = pts[j++];

@@ -21,7 +21,6 @@ public class InsertionSorter extends AbstractSorter
 {
 	// Other private instance variables if you need ...
 	Point[] points;
-	String fileName;
 	
 	/**
 	 * The two constructors below invoke their corresponding superclass constructors. They
@@ -36,7 +35,7 @@ public class InsertionSorter extends AbstractSorter
 	public InsertionSorter(Point[] pts) 
 	{
 		super(pts);
-		points = pts;
+		points = super.points;
 	}	
 
 	
@@ -48,7 +47,7 @@ public class InsertionSorter extends AbstractSorter
 	public InsertionSorter(String inputFileName) throws FileNotFoundException 
 	{
 		super(inputFileName);
-		fileName = inputFileName;
+		points = super.points;
 	}
 	
 	

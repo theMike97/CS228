@@ -1,7 +1,8 @@
 package edu.iastate.cs228.hw2;
 
 import java.io.FileNotFoundException;
-import java.lang.NumberFormatException; 
+import java.lang.NumberFormatException;
+import java.util.Arrays;
 import java.lang.IllegalArgumentException; 
 
 
@@ -21,7 +22,6 @@ public class SelectionSorter extends AbstractSorter
 {
 	// Other private instance variables if you need ... 
 	private Point[] points;
-	String inputFile;
 	
 	/**
 	 * The two constructors below invoke their corresponding superclass constructors. They
@@ -36,7 +36,7 @@ public class SelectionSorter extends AbstractSorter
 	public SelectionSorter(Point[] pts)  
 	{
 		super(pts);
-		points = pts;
+		points = super.points;
 	}	
 
 	
@@ -49,7 +49,7 @@ public class SelectionSorter extends AbstractSorter
 	public SelectionSorter(String inputFileName) throws FileNotFoundException
 	{
 		super(inputFileName);
-		inputFile = inputFileName;
+		points = super.points;
 	}
 	
 	
@@ -63,14 +63,32 @@ public class SelectionSorter extends AbstractSorter
 	@Override 
 	public void sort(int order)
 	{ 
+		sortByAngle = (order == 2) ? true : false;
+		setComparator();
+		
+		String debug = "";
+		
+		if (points == null || points.length == 0)
+			throw new IllegalArgumentException("Null pointer or 0 size");
+		
 		for (int i = 0; i < points.length - 1; i++) {
 			int index = i;
-			for (int j = i+1; j < points.length; j++) {
+			
+			for (int j = i + 1; j < points.length; j++) {
 				
-				if (pointComparator.compare(points[j], points[index]) == -1) index = j;
+				System.out.println(pointComparator.compare(points[j], points[index]) == -1);
 				
-				if (i != index) swap(i, index);
+				if (pointComparator.compare(points[j], points[index]) == -1)
+					index = j;
+				
+				if (i != index) {
+					System.out.println("here");
+					swap(i, index);
+				}
+					
 			}
+			debug += " -> " + Arrays.toString(points) + "\n";
 		}
+		System.out.println(debug);
 	}
 }

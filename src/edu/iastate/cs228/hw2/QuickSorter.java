@@ -37,7 +37,7 @@ public class QuickSorter extends AbstractSorter
 	public QuickSorter(Point[] pts)
 	{
 		super(pts);
-		points = pts;
+		points = super.points;
 	}
 		
 
@@ -49,7 +49,7 @@ public class QuickSorter extends AbstractSorter
 	public QuickSorter(String inputFileName) throws FileNotFoundException
 	{
 		super(inputFileName);
-		fileName = inputFileName;
+		points = super.points;
 	}
 
 
@@ -63,6 +63,9 @@ public class QuickSorter extends AbstractSorter
 	@Override 
 	public void sort(int order)
 	{
+		sortByAngle = (order == 2) ? true : false;
+		setComparator();
+		
 		quickSortRec(0, points.length - 1);
 	}
 	

@@ -1,7 +1,5 @@
 package edu.iastate.cs228.hw2;
 
-import java.util.Arrays;
-
 /**
  *  
  * @author
@@ -104,9 +102,9 @@ public abstract class AbstractSorter {
 				while (sc.hasNext()) {
 
 					x = sc.nextInt();
-					if (sc.hasNext()) {
+					if (sc.hasNext())
 						y = sc.nextInt();
-					} else
+					else
 						throw new InputMismatchException();
 
 					Point p = new Point(x, y);
