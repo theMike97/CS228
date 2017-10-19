@@ -90,7 +90,14 @@ public class AdaptiveList<E> implements List<E> {
 			throw new RuntimeException("numItems is negative: " + numItems);
 		if (!linkedUTD)
 			throw new RuntimeException("linkedUTD is false");
-		// TODO
+		
+		theArray = (E[])(new Object[numItems]);
+		AdaptiveListIterator ali = new AdaptiveListIterator();
+		
+		for (int i = 0; i < numItems; i++) {
+			theArray[i] = ali.next();
+		}
+		arrayUTD = true;
 	}
 
 	private void updateLinked() // makes the linked list up-to-date.
@@ -102,8 +109,13 @@ public class AdaptiveList<E> implements List<E> {
 
 		if (theArray == null || theArray.length < numItems)
 			throw new RuntimeException("theArray is null or shorter");
-
-		// TODO
+		
+		for (int i = 0; i < numItems; i++) {
+			head.link = tail;
+			tail.prev = head;
+			for (E element : theArray) add(element);
+			linkedUTD = true;
+		}
 	}
 
 	@Override
@@ -199,7 +211,13 @@ public class AdaptiveList<E> implements List<E> {
 	// without using any additional array, and returns true.
 	// Note that if the array is modified, then linkedUTD needs to be set to false.
 	public boolean reverse() {
-		// TODO
+		E temp;
+		if (numItems <= 1) return false;
+		for (int i = 0; i < (numItems/2); i++) {
+			temp = theArray[numItems - i];
+			theArray[numItems - i] = theArray[i];
+			theArray[i] = temp;
+		}
 		return true; // may need to be revised.
 	}
 
