@@ -223,13 +223,22 @@ public class AdaptiveList<E> implements List<E> {
 
 	@Override
 	public boolean contains(Object obj) {
-		// TODO
-		return true; // may need to be revised.
+		AdaptiveListIterator c = new AdaptiveListIterator();
+		for (int i = 0; i < numItems; i++) {
+		    if (c.next().equals(obj)) return true;
+		}
+		return false;
 	}
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
-		// TODO
+		Iterator temp = c.iterator();
+
+		while (temp.hasNext()) {
+		    if (!contains(temp.next())) {
+			return false;
+		    }
+		}
 		return true; // may need to be revised.
 	} // containsAll
 
@@ -253,19 +262,28 @@ public class AdaptiveList<E> implements List<E> {
 
 	@Override
 	public boolean retainAll(Collection<?> c) {
-		// TODO
+		updateLinked();
+	    	if (c != null) return false;
+
+		AdaptiveListIterator adli = new AdaptiveListIterator();
+
+		for (int i = 0; i < numItems; i++) {
+		    if (!c.contains(adli.next()))
+			adli.remove();
+		}
+		updateArray();
 		return true; // may need to be revised.
 	}
 
 	@Override
 	public Object[] toArray() {
-		// TODO
+	    	// basically updateArray with temp array instead of 'theArray'
 		return null; // may need to be revised.
 	}
 
 	@Override
 	public <T> T[] toArray(T[] arr) {
-		// TODO
+		
 		return null; // may need to be revised.
 	}
 
