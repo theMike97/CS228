@@ -97,7 +97,7 @@ public class AdaptiveListTests {
 	@Test
 	public void AddTest3() {
 		list.add("oi");
-		boolean newSize = list.getarrayUTD(); 
+		boolean newSize = list.getarrayUTD();
 		boolean expected = false;
 		assertEquals("After calling add, the array should be out of date.", expected, newSize);
 	}

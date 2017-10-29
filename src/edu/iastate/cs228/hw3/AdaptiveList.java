@@ -6,7 +6,6 @@ package edu.iastate.cs228.hw3;
  *
  */
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -50,14 +49,30 @@ public class AdaptiveList<E> implements List<E> {
 		theArray = null;
 	}
 
+	/**
+	 * Returns true if linked list matches array
+	 * 
+	 * @return
+	 */
 	public boolean getlinkedUTD() {
 		return linkedUTD;
 	}
 
+	/**
+	 * Returns true if theArray and the linked list match.
+	 * 
+	 * @return
+	 */
 	public boolean getarrayUTD() {
 		return arrayUTD;
 	}
 
+	/**
+	 * AdaptiveList constructor that passes in Collection c as an argument
+	 * Instantiates an AdaptiveList with the contents of c loaded.
+	 * 
+	 * @param c
+	 */
 	public AdaptiveList(Collection<? extends E> c) {
 		clear();
 		addAll(c);
@@ -65,6 +80,11 @@ public class AdaptiveList<E> implements List<E> {
 
 	// Removes the node from the linked list.
 	// This method should be used to remove a node from the linked list.
+	/**
+	 * Removes toRemove from linked list.
+	 * 
+	 * @param toRemove
+	 */
 	private void unlink(ListNode toRemove) {
 		if (toRemove == head || toRemove == tail)
 			throw new RuntimeException("An attempt to remove head or tail");
@@ -74,6 +94,12 @@ public class AdaptiveList<E> implements List<E> {
 
 	// Inserts new node toAdd right after old node current.
 	// This method should be used to add a node to the linked list.
+	/**
+	 * Inserts ListNode toAdd after ListNode current
+	 * 
+	 * @param current
+	 * @param toAdd
+	 */
 	private void link(ListNode current, ListNode toAdd) {
 		if (current == tail)
 			throw new RuntimeException("An attempt to link after tail");
@@ -85,6 +111,10 @@ public class AdaptiveList<E> implements List<E> {
 		current.link = toAdd;
 	}
 
+	/**
+	 * Syncs theArray with the up-to-date linked list.
+	 * 
+	 */
 	private void updateArray() // makes theArray up-to-date.
 	{
 		if (numItems < 0)
@@ -101,6 +131,10 @@ public class AdaptiveList<E> implements List<E> {
 		arrayUTD = true;
 	}
 
+	/**
+	 * Syncs the linked list with the up-to-date array
+	 * 
+	 */
 	private void updateLinked() // makes the linked list up-to-date.
 	{
 		if (numItems < 0)
@@ -140,7 +174,7 @@ public class AdaptiveList<E> implements List<E> {
 		tail.prev = n;
 		numItems++;
 		// System.out.println(toString());
-//		updateArray();
+		arrayUTD = false;
 		return true; // may need to be revised.
 	}
 
@@ -154,6 +188,7 @@ public class AdaptiveList<E> implements List<E> {
 
 		for (int i = 0; i < size; i++) {
 			add(iter.next());
+			updateArray();
 		}
 		return true; // may need to be revised.
 	} // addAll 1
@@ -165,9 +200,15 @@ public class AdaptiveList<E> implements List<E> {
 			;
 		adli.remove();
 		numItems--;
+		updateArray();
 		return true;
 	}
 
+	/**
+	 * Not important
+	 * 
+	 * @param pos
+	 */
 	private void checkIndex(int pos) // a helper method
 	{
 		if (pos >= numItems || pos < 0)
@@ -211,7 +252,7 @@ public class AdaptiveList<E> implements List<E> {
 		adli.add(obj);
 
 		numItems++;
-		updateArray();
+		arrayUTD = false;
 	}
 
 	@Override
@@ -256,6 +297,7 @@ public class AdaptiveList<E> implements List<E> {
 
 	@Override
 	public E get(int pos) {
+//		updateLinked();
 		if (pos < 0 || pos > size())
 			throw new IndexOutOfBoundsException();
 
@@ -263,22 +305,24 @@ public class AdaptiveList<E> implements List<E> {
 		for (int i = 0; i < pos; i++) {
 			adli.next();
 		}
-		updateArray();
 		return adli.next(); // may need to be revised.
 	}
 
 	@Override
 	public E set(int pos, E obj) {
+		updateArray();
 		if (pos < 0 || pos > size())
 			throw new IndexOutOfBoundsException();
-
-		AdaptiveListIterator adli = new AdaptiveListIterator();
-		for (int i = 0; i <= pos; i++) {
-			System.out.println(adli.next());
-		}
-		adli.set(obj);
-		updateArray();
-		System.out.println(this);
+		
+		theArray[pos] = obj;
+		
+//		AdaptiveListIterator adli = new AdaptiveListIterator();
+//		for (int i = 0; i <= pos; i++) {
+//			System.out.println(adli.next());
+//		}
+//		adli.set(obj);
+//		updateArray();
+//		System.out.println(this);
 		return obj; // may need to be revised.
 	}
 
@@ -286,7 +330,15 @@ public class AdaptiveList<E> implements List<E> {
 	// Otherwise, it reverses the order of the elements in the array
 	// without using any additional array, and returns true.
 	// Note that if the array is modified, then linkedUTD needs to be set to false.
+	/**
+	 * reverses order of theArray and sets linkedUTD to false;
+	 * 
+	 * @return
+	 */
 	public boolean reverse() {
+		if (size() <= 1)
+			return false;
+		
 		E temp;
 		if (numItems <= 1)
 			return false;
@@ -295,6 +347,7 @@ public class AdaptiveList<E> implements List<E> {
 			theArray[numItems - i] = theArray[i];
 			theArray[i] = temp;
 		}
+		linkedUTD = false;
 		return true; // may need to be revised.
 	}
 
@@ -322,14 +375,39 @@ public class AdaptiveList<E> implements List<E> {
 
 	@Override
 	public int indexOf(Object obj) {
-		// TODO
-		return -1; // may need to be revised.
+		if (this.isEmpty())
+			return -1;
+		
+		AdaptiveListIterator adli = new AdaptiveListIterator();
+		int index = 0;
+		
+		while (adli.hasNext()) {
+			if (!adli.next().equals(obj)) {
+				index++;
+			} else {
+				return index;
+			}
+		}
+		return -1;
 	}
 
 	@Override
 	public int lastIndexOf(Object obj) {
-		// TODO
-		return -1; // may need to be revised.
+		if (this.isEmpty())
+			return -1;
+		
+		AdaptiveListIterator adli = new AdaptiveListIterator();
+		int running = 0;
+		int lastIndex = -1;
+		
+		while (adli.hasNext()) {
+			if (!adli.next().equals(obj)) {
+				running++;
+			} else {
+				lastIndex = running++;
+			}
+		}
+		return lastIndex; // may need to be revised.
 	}
 
 	@Override
@@ -384,10 +462,15 @@ public class AdaptiveList<E> implements List<E> {
 	@Override
 	public <T> T[] toArray(T[] arr) {
 		updateArray();
-		T[] tmp = (T[]) (new String[numItems]);
-		System.out.println(Arrays.toString(theArray));
+		T[] tmp = (T[]) (new String[(numItems < arr.length) ? arr.length : numItems]);
 		for (int i = 0; i < numItems; i++) {
 			tmp[i] = (T) theArray[i];
+		}
+		if (numItems < arr.length) {
+			tmp[numItems] = null;
+			for (int i = numItems + 1; i < arr.length; i++) {
+				tmp[i] = arr[i];
+			}
 		}
 		
 //		tmp = (T[]) theArray;
@@ -403,7 +486,13 @@ public class AdaptiveList<E> implements List<E> {
 		private int index; // index of next node;
 		private ListNode cur; // node at index - 1
 		private ListNode last; // node last visited by next() or previous()
-
+		
+		/**
+		 * Default constructor
+		 * Updates linked list if not already up to date.
+		 * Puts cur between head and tail.
+		 * 
+		 */
 		public AdaptiveListIterator() {
 			if (!linkedUTD)
 				updateLinked();
@@ -414,6 +503,13 @@ public class AdaptiveList<E> implements List<E> {
 			index = 0;
 		}
 
+		/**
+		 * Constructor passes in int pos
+		 * updates linked list
+		 * puts puts cur at pos inside the list
+		 * 
+		 * @param pos
+		 */
 		public AdaptiveListIterator(int pos) {
 			if (!linkedUTD)
 				updateLinked();
@@ -471,22 +567,31 @@ public class AdaptiveList<E> implements List<E> {
 
 		@Override
 		public int previousIndex() {
-			return index;
+			return index - 1;
 		}
-
+		
+		/**
+		 * removes the element which cur most recently passed over
+		 * 
+		 */
 		public void remove() {
 			if (last != null) {
 				cur = last;
 				cur.link.prev = cur.prev;
 				cur.prev.link = cur.link;
 
-				index--;
+//				index--;
 				last = null;
 			} else {
 				throw new IllegalStateException();
 			}
 		}
-
+		
+		/**
+		 * Inserts obj at cur's position in the list and puts cur ahead of obj
+		 * 
+		 * @param obj
+		 */
 		public void add(E obj) {
 			ListNode n = new ListNode(obj);
 			cur.prev = n;
@@ -566,7 +671,12 @@ public class AdaptiveList<E> implements List<E> {
 		String eol = System.getProperty("line.separator");
 		return toStringArray() + eol + toStringLinked();
 	}
-
+	
+	/**
+	 * Returns a string interpretation of theArray
+	 * 
+	 * @return
+	 */
 	public String toStringArray() {
 		String eol = System.getProperty("line.separator");
 		StringBuilder strb = new StringBuilder();
@@ -586,11 +696,23 @@ public class AdaptiveList<E> implements List<E> {
 		return strb.toString();
 	}
 
+	/**
+	 * calls toStringLinked(null)
+	 * 
+	 * @return
+	 */
 	public String toStringLinked() {
 		return toStringLinked(null);
 	}
 
 	// iter can be null.
+	/**
+	 * uses iter to move over the linked list and return a string
+	 * interpretation of the list.
+	 * 
+	 * @param iter
+	 * @return
+	 */
 	public String toStringLinked(ListIterator<E> iter) {
 		int cnt = 0;
 		int loc = iter == null ? -1 : iter.nextIndex();
